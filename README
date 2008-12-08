@@ -9,6 +9,7 @@ Requirements: Symphony 2.0
 This is a replacement for the Maintenance mode option found in all Symphony 
 version prior to 2.0
 
+Will not work in any version prior to 2.0 stable.
 
 [INSTALLATION]
 
@@ -20,4 +21,4 @@ version prior to 2.0
 
 3. Create/Edit a page with the type "maintenance". This is the page that will be displayed to visitors.
 
-3. Go to System > Preferences to enable/disable "Maintenance Mode".
+4. Go to System > Preferences to enable/disable "Maintenance Mode".
