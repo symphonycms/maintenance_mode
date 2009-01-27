@@ -4,8 +4,8 @@
 
 		public function about(){
 			return array('name' => 'Maintenance Mode',
-						 'version' => '1.0',
-						 'release-date' => '2008-12-07',
+						 'version' => '1.1',
+						 'release-date' => '2009-01-27',
 						 'author' => array('name' => 'Alistair Kearney',
 										   'website' => 'http://pointybeard.com',
 										   'email' => 'alistair@pointybeard.com')
@@ -68,9 +68,9 @@
 			
 			if(!is_null($context['alert'])) return;
 			
-			if($this->_Parent->Configuration->get('enabled', 'maintenance_mode') == 'yes') 
-				$this->_Parent->Page->pageAlert('This site is currently in maintenance mode. <a href="{1}">Restore?</a>', AdministrationPage::PAGE_ALERT_NOTICE, array(URL . '/symphony/system/preferences/?action=toggle-maintenance-mode&amp;redirect=' . getCurrentPage()));
-			
+			if($this->_Parent->Configuration->get('enabled', 'maintenance_mode') == 'yes'){
+				Administration::instance()->Page->pageAlert(__('This site is currently in maintenance mode. <a href="%s/symphony/system/preferences/?action=toggle-maintenance-mode&amp;redirect=%s">Restore?</a>', array(URL, getCurrentPage())), Alert::NOTICE);
+			}
 		}
 		
 		public function __addParam($context){
@@ -88,7 +88,9 @@
 											AND tbl_pages_types.`type` = 'maintenance' 
 											LIMIT 1");
 			
-				if(empty($context['row'])) $this->_Parent->customError(E_USER_ERROR, 'Website Offline', 'This site is currently in maintenance. Please check back at a later date.', false, true);
+				if(empty($context['row'])){
+					$this->_Parent->customError(E_USER_ERROR, 'Website Offline', 'This site is currently in maintenance. Please check back at a later date.', false, true);
+				}
 				
 			}
 			
