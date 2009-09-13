@@ -89,7 +89,7 @@
 											LIMIT 1");
 			
 				if(empty($context['row'])){
-					$this->_Parent->customError(E_USER_ERROR, 'Website Offline', 'This site is currently in maintenance. Please check back at a later date.', false, true);
+					$this->_Parent->customError(E_USER_ERROR, __('Website Offline'), __('This site is currently in maintenance. Please check back at a later date.'), false, true);
 				}
 				
 			}
@@ -110,15 +110,15 @@
 
 			$group = new XMLElement('fieldset');
 			$group->setAttribute('class', 'settings');
-			$group->appendChild(new XMLElement('legend', 'Maintenance Mode'));			
+			$group->appendChild(new XMLElement('legend', __('Maintenance Mode')));			
 			
 			$label = Widget::Label();
 			$input = Widget::Input('settings[maintenance_mode][enabled]', 'yes', 'checkbox');
 			if($this->_Parent->Configuration->get('enabled', 'maintenance_mode') == 'yes') $input->setAttribute('checked', 'checked');
-			$label->setValue($input->generate() . ' Enable maintenance mode');
+			$label->setValue($input->generate() . ' ' . __('Enable maintenance mode'));
 			$group->appendChild($label);
 						
-			$group->appendChild(new XMLElement('p', 'Maintenance mode will redirect all visitors, other than developers, to the specified maintenance page.', array('class' => 'help')));
+			$group->appendChild(new XMLElement('p', __('Maintenance mode will redirect all visitors, other than developers, to the specified maintenance page.'), array('class' => 'help')));
 									
 			$context['wrapper']->appendChild($group);
 						
