@@ -15,7 +15,7 @@
 	 * Localisation strings
 	 */
 
-	$dictionary += array(
+	$dictionary = array(
 	
 		'Maintenance Mode' => 
 		'Wartungsmodus',
