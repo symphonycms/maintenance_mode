@@ -69,7 +69,7 @@
 			if(!is_null($context['alert'])) return;
 			
 			if($this->_Parent->Configuration->get('enabled', 'maintenance_mode') == 'yes'){
-				Administration::instance()->Page->pageAlert(__('This site is currently in maintenance mode. <a href="%s/symphony/system/preferences/?action=toggle-maintenance-mode&amp;redirect=%s">Restore?</a>', array(URL, getCurrentPage())), Alert::NOTICE);
+				Administration::instance()->Page->pageAlert(__('This site is currently in maintenance mode.') . ' <a href="' . URL . '/symphony/system/preferences/?action=toggle-maintenance-mode&amp;redirect=' . getCurrentPage() . '">' . __('Restore?') . '</a>', Alert::NOTICE);
 			}
 		}
 		
@@ -78,7 +78,6 @@
 		}
 		
 		public function __checkForMaintenanceMode($context){
-
 			
 			if(!$this->_Parent->isLoggedIn() && $this->_Parent->Configuration->get('enabled', 'maintenance_mode') == 'yes'){
 				
@@ -123,4 +122,5 @@
 			$context['wrapper']->appendChild($group);
 						
 		}
+		
 	}
