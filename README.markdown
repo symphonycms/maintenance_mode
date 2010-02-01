@@ -3,8 +3,8 @@
 This extension enables a Maintenance mode for Symphony.  
 It is part of the Symphony core download package.
 
-- Version: 1.2dev
-- Date: **unreleased**
+- Version: 1.2
+- Date: 2nd Feb 2010
 - Requirements: Symphony 2.0.x
 - Author: Alistair Kearney, alistair@symphony-cms.com
 - Constributors: [A list of contributors can be found in the commit history](http://github.com/pointybeard/maintenance_mode/commits/master)

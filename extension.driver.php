@@ -4,8 +4,8 @@
 
 		public function about(){
 			return array('name' => 'Maintenance Mode',
-						 'version' => '1.1',
-						 'release-date' => '2009-01-27',
+						 'version' => '1.2',
+						 'release-date' => '2010-02-02',
 						 'author' => array('name' => 'Alistair Kearney',
 										   'website' => 'http://pointybeard.com',
 										   'email' => 'alistair@pointybeard.com')
