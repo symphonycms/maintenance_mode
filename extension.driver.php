@@ -30,31 +30,31 @@
 						array(
 							'page' => '/system/settings/',
 							'delegate' => 'CustomActions',
-							'callback' => '__toggleMaintenanceMode'
+							'callback' => 'cbToggleMaintenanceMode'
 						),
 
 						array(
 							'page' => '/frontend/',
-							'delegate' => 'FrontendPrePageResolve',
-							'callback' => '__checkForMaintenanceMode'
+							'delegate' => 'FrontendPreInitialise',
+							'callback' => 'cbCheckForMaintenanceMode'
 						),
 							
 						array(
 							'page' => '/frontend/',
-							'delegate' => 'FrontendParamsResolve',
-							'callback' => '__addParam'
+							'delegate' => 'FrontendPreRender',
+							'callback' => 'cbAddParam'
 						),						
 						
 						array(
 							'page' => '/backend/',
 							'delegate' => 'AppendPageAlert',
-							'callback' => '__appendAlert'
+							'callback' => 'cbAppendAlert'
 						),				
 
 					);
 		}
 		
-		public function __toggleMaintenanceMode($context){
+		public function cbToggleMaintenanceMode($context){
 			
 			if($_REQUEST['action'] == 'toggle-maintenance-mode'){			
 				$value = (Symphony::Configuration()->{'maintenance-mode'}()->enabled == 'no' ? 'yes' : 'no');
@@ -65,7 +65,7 @@
 			
 		}
 		
-		public function __appendAlert($context){
+		public function cbAppendAlert($context){
 			
 			//if(!is_null($context['alert'])) return;
 			
@@ -74,26 +74,17 @@
 			}
 		}
 		
-		public function __addParam($context){
-			$context['params']['site-mode'] = (Symphony::Configuration()->{'maintenance-mode'}()->enabled == 'yes' ? 'maintenance' : 'live'); 
+		public function cbAddParam($context){
+			$context['parameters']->{'site-mode'} = (Symphony::Configuration()->{'maintenance-mode'}()->enabled == 'yes' ? 'maintenance' : 'live'); 
 		}
 		
-		public function __checkForMaintenanceMode($context){
-			
+		public function cbCheckForMaintenanceMode($context){
 			if(!Symphony::Parent()->isLoggedIn() && Symphony::Configuration()->{'maintenance-mode'}()->enabled == 'yes'){
-				
-				$context['row'] = Symphony::Database()->fetchRow(0, "
-											SELECT `tbl_pages`.* FROM `tbl_pages`, `tbl_pages_types` 
-											WHERE `tbl_pages_types`.page_id = `tbl_pages`.id 
-											AND tbl_pages_types.`type` = 'maintenance' 
-											LIMIT 1");
-			
-				if(empty($context['row'])){
-					Symphony::Parent()->customError(E_USER_ERROR, __('Website Offline'), __('This site is currently in maintenance. Please check back at a later date.'), false, true);
+				$context['view'] = end(View::findFromType('maintenance'));
+				if(!($context['view'] instanceof View)){
+					throw new FrontendPageNotFoundException;
 				}
-				
 			}
-			
 		}
 		
 		public function cbSavePreferences($context){
