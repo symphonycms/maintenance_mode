@@ -1,0 +1,10 @@
+<?php
+
+	Class MaintenanceModeStatus extends ShellCommand{
+		public function run(array $args=NULL){		
+			printf("Maintenance Mode is currently [%s]\n", Symphony::Configuration()->{'maintenance-mode'}()->enabled == 'yes' ? 'ENABLED' : 'DISABLED');
+			exit;
+		}
+	}
+
+	return 'MaintenanceModeStatus';

@@ -25,7 +25,7 @@
 							'page' => '/system/settings/extensions/',
 							'delegate' => 'CustomSaveActions',
 							'callback' => 'cbSavePreferences'
-						),							
+						),
 						
 						array(
 							'page' => '/system/settings/',

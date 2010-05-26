@@ -1,0 +1,18 @@
+<?php
+
+	Class DisableMaintenanceMode extends ShellCommand{
+		public function run(array $args=NULL){
+
+			if(!Shell::instance()->isLoggedIn()){
+				throw new Exception('Valid authentication token must be supplied.');
+			}
+
+			Symphony::Configuration()->{'maintenance-mode'}()->enabled = 'no';
+			Symphony::Configuration()->{'maintenance-mode'}()->save();
+			
+			echo 'Maintenance Mode is now [DISABLED]' . "\n";
+			exit;
+		}
+	}
+
+	return 'DisableMaintenanceMode';
