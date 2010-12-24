@@ -21,6 +21,7 @@ Information about [installing and updating extensions](http://symphony-cms.com/l
 ## Change Log
 
 **Version 1.3**
+
 - Made extension responsible for it's own Configuration settings
 - Updated to use the Symphony constants instead of `$this->_Parent`
 
