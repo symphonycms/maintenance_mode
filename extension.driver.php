@@ -159,11 +159,8 @@
 				// Default maintenance message
 				if(empty($context['row'])) {
 					Symphony::Engine()->customError(
-						E_USER_ERROR, 
 						__('Website Offline'), 
-						__('This site is currently in maintenance. Please check back at a later date.'), 
-						false, 
-						true
+						__('This site is currently in maintenance. Please check back at a later date.') 
 					);
 				}
 			}
