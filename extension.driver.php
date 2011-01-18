@@ -1,126 +1,212 @@
 <?php
 
-	Class extension_maintenance_mode extends Extension{
+	Class extension_maintenance_mode extends Extension {
 
-		public function about(){
-			return array('name' => 'Maintenance Mode',
-						 'version' => '1.2',
-						 'release-date' => '2010-02-02',
-						 'author' => array('name' => 'Alistair Kearney',
-										   'website' => 'http://pointybeard.com',
-										   'email' => 'alistair@pointybeard.com')
-				 		);
-		}
-		
-		public function getSubscribedDelegates(){
+		public function about() {
 			return array(
-						array(
-							'page' => '/system/preferences/',
-							'delegate' => 'AddCustomPreferenceFieldsets',
-							'callback' => 'appendPreferences'
-						),
-						
-						array(
-							'page' => '/system/preferences/',
-							'delegate' => 'Save',
-							'callback' => '__SavePreferences'
-						),							
-						
-						array(
-							'page' => '/system/preferences/',
-							'delegate' => 'CustomActions',
-							'callback' => '__toggleMaintenanceMode'
-						),
-
-						array(
-							'page' => '/frontend/',
-							'delegate' => 'FrontendPrePageResolve',
-							'callback' => '__checkForMaintenanceMode'
-						),
-							
-						array(
-							'page' => '/frontend/',
-							'delegate' => 'FrontendParamsResolve',
-							'callback' => '__addParam'
-						),						
-						
-						array(
-							'page' => '/backend/',
-							'delegate' => 'AppendPageAlert',
-							'callback' => '__appendAlert'
-						),				
-
-					);
+				'name' => 'Maintenance Mode',
+				'version' => '1.3',
+				'release-date' => '2011-01-18',
+				'author' => array(
+					array(
+						'name' => 'Alistair Kearney',
+						'website' => 'http://pointybeard.com',
+						'email' => 'alistair@pointybeard.com'
+					),
+					array(
+						'name' => 'Symphony Team',
+						'website' => 'http://symphony-cms.com',
+						'email' => 'team@symphony-cms.com'
+					)
+				)				
+			);
 		}
 		
-		public function __toggleMaintenanceMode($context){
+		public function getSubscribedDelegates() {
+			return array(
+				array(
+					'page' => '/system/preferences/',
+					'delegate' => 'AddCustomPreferenceFieldsets',
+					'callback' => 'appendPreferences'
+				),
+				array(
+					'page' => '/system/preferences/',
+					'delegate' => 'Save',
+					'callback' => '__SavePreferences'
+				),							
+				array(
+					'page' => '/system/preferences/',
+					'delegate' => 'CustomActions',
+					'callback' => '__toggleMaintenanceMode'
+				),
+				array(
+					'page' => '/frontend/',
+					'delegate' => 'FrontendPrePageResolve',
+					'callback' => '__checkForMaintenanceMode'
+				),
+				array(
+					'page' => '/frontend/',
+					'delegate' => 'FrontendParamsResolve',
+					'callback' => '__addParam'
+				),						
+				array(
+					'page' => '/backend/',
+					'delegate' => 'AppendPageAlert',
+					'callback' => '__appendAlert'
+				),
+				array(
+					'page' => '/blueprints/pages/',
+					'delegate' => 'AppendPageContent',
+					'callback' => '__appendType'
+				)
+			);
+		}
+		
+		/**
+		 * Toggle maintenance mode and redirect to the previous page, if specified.
+		 */		
+		public function __toggleMaintenanceMode() {
+			if($_REQUEST['action'] == 'toggle-maintenance-mode') {
 			
-			if($_REQUEST['action'] == 'toggle-maintenance-mode'){			
-				$value = ($this->_Parent->Configuration->get('enabled', 'maintenance_mode') == 'no' ? 'yes' : 'no');					
-				$this->_Parent->Configuration->set('enabled', $value, 'maintenance_mode');
-				$this->_Parent->saveConfig();
-				redirect((isset($_REQUEST['redirect']) ? URL . '/symphony' . $_REQUEST['redirect'] : $this->_Parent->getCurrentPageURL() . '/'));
+				// Toogle mode	
+				$value = (Symphony::Configuration()->get('enabled', 'maintenance_mode') == 'no' ? 'yes' : 'no');					
+				Symphony::Configuration()->set('enabled', $value, 'maintenance_mode');
+				Symphony::Engine()->saveConfig();
+				
+				// Redirect
+				redirect((isset($_REQUEST['redirect']) ? URL . '/symphony' . $_REQUEST['redirect'] : Symphony::Engine()->getCurrentPageURL() . '/'));
 			}
-			
 		}
 		
-		public function __appendAlert($context){
+		/**
+		 * Append notice that the site is currently in maintenance mode offering a link 
+		 * to switch to live mode if no other alert is set.
+		 *
+		 * @param array $context
+		 *  delegate context
+		 */
+		public function __appendAlert($context) {
 			
+			// Check for other alerts
 			if(!is_null($context['alert'])) return;
 			
-			if($this->_Parent->Configuration->get('enabled', 'maintenance_mode') == 'yes'){
-				Administration::instance()->Page->pageAlert(__('This site is currently in maintenance mode.') . ' <a href="' . URL . '/symphony/system/preferences/?action=toggle-maintenance-mode&amp;redirect=' . getCurrentPage() . '">' . __('Restore?') . '</a>', Alert::NOTICE);
+			// Site in maintenance mode
+			if(Symphony::Configuration()->get('enabled', 'maintenance_mode') == 'yes') {
+				Symphony::Engine()->Page->pageAlert(
+					__('This site is currently in maintenance mode.') . ' <a href="' . URL . '/symphony/system/preferences/?action=toggle-maintenance-mode&amp;redirect=' . getCurrentPage() . '">' . __('Restore?') . '</a>',
+					Alert::NOTICE
+				);
 			}
 		}
 		
-		public function __addParam($context){
-			$context['params']['site-mode'] = ($this->_Parent->Configuration->get('enabled', 'maintenance_mode') == 'yes' ? 'maintenance' : 'live'); 
+		/**
+		 * Add site mode to parameter pool
+		 *
+		 * @param array $context
+		 *  delegate context
+		 */
+		public function __addParam($context) {
+			$context['params']['site-mode'] = (Symphony::Configuration()->get('enabled', 'maintenance_mode') == 'yes' ? 'maintenance' : 'live'); 
 		}
 		
-		public function __checkForMaintenanceMode($context){
+		/**
+		 * Append type for maintenance pages to page editor.
+		 *
+		 * @param array $context
+		 *  delegate context
+		 */
+		public function __appendType($context) {
+		
+			// Find page types
+			$elements = $context['form']->getChildren();
+			$fieldset = $elements[3]->getChildren();
+			$group = $fieldset[2]->getChildren();
+			$div = $group[1]->getChildren();
+			$types = $div[2]->getChildren();
 			
-			if(!$this->_Parent->isLoggedIn() && $this->_Parent->Configuration->get('enabled', 'maintenance_mode') == 'yes'){
-				
-				$context['row'] = $this->_Parent->Database->fetchRow(0, "
-											SELECT `tbl_pages`.* FROM `tbl_pages`, `tbl_pages_types` 
-											WHERE `tbl_pages_types`.page_id = `tbl_pages`.id 
-											AND tbl_pages_types.`type` = 'maintenance' 
-											LIMIT 1");
-			
-				if(empty($context['row'])){
-					$this->_Parent->customError(E_USER_ERROR, __('Website Offline'), __('This site is currently in maintenance. Please check back at a later date.'), false, true);
+			// Search for existing maintenance type
+			$flag = false;
+			foreach($types as $type) {
+				if($type->getValue() == 'maintenance') {
+					$flag = true;
 				}
-				
 			}
 			
+			// Append maintenance type
+			if($flag == false) {
+				$mode = new XMLElement('li', 'maintenance');
+				$types[1]->appendChild($mode);
+			}
 		}
 		
-		public function __SavePreferences($context){
-
-			if(!is_array($context['settings'])) $context['settings'] = array('maintenance_mode' => array('enabled' => 'no'));
+		/**
+		 * Redirect to maintenance page, if site is in maintenance and the user is not logged in
+		 *
+		 * @param array $context
+		 *  delegate context
+		 */
+		public function __checkForMaintenanceMode($context) {
+			if(!Symphony::Engine()->isLoggedIn() && Symphony::Configuration()->get('enabled', 'maintenance_mode') == 'yes'){
+				
+				// Find custom maintenance page
+				$context['row'] = Symphony::Database()->fetchRow(0, 
+					"SELECT `tbl_pages`.* FROM `tbl_pages`, `tbl_pages_types` 
+					 WHERE `tbl_pages_types`.page_id = `tbl_pages`.id 
+					 AND tbl_pages_types.`type` = 'maintenance' 
+					 LIMIT 1"
+				);
 			
-			elseif(!isset($context['settings']['maintenance_mode'])){
-				$context['settings']['maintenance_mode'] = array('enabled' => 'no');
+				// Default maintenance message
+				if(empty($context['row'])) {
+					Symphony::Engine()->customError(
+						E_USER_ERROR, 
+						__('Website Offline'), 
+						__('This site is currently in maintenance. Please check back at a later date.'), 
+						false, 
+						true
+					);
+				}
+			}
+		}
+		
+		/**
+		 * Save preferences
+		 *
+		 * @param array $context
+		 *  delegate context
+		 */
+		public function __SavePreferences($context) {
+
+			// Disable maintenance mode by default
+			if(!is_array($context['settings'])) {
+				$context['settings'] = array('maintenance_mode' => array('enabled' => 'no'));
 			}
 			
+			// Disable maintenance mode if it has not been set to 'yes'
+			elseif(!isset($context['settings']['maintenance_mode'])) {
+				$context['settings']['maintenance_mode'] = array('enabled' => 'no');
+			}			
 		}
 
-		public function appendPreferences($context){
+		public function appendPreferences($context) {
 
+			// Create preference group
 			$group = new XMLElement('fieldset');
 			$group->setAttribute('class', 'settings');
 			$group->appendChild(new XMLElement('legend', __('Maintenance Mode')));			
 			
+			// Append settings
 			$label = Widget::Label();
 			$input = Widget::Input('settings[maintenance_mode][enabled]', 'yes', 'checkbox');
-			if($this->_Parent->Configuration->get('enabled', 'maintenance_mode') == 'yes') $input->setAttribute('checked', 'checked');
+			if(Symphony::Configuration()->get('enabled', 'maintenance_mode') == 'yes') $input->setAttribute('checked', 'checked');
 			$label->setValue($input->generate() . ' ' . __('Enable maintenance mode'));
 			$group->appendChild($label);
-						
+			
+			// Append help
 			$group->appendChild(new XMLElement('p', __('Maintenance mode will redirect all visitors, other than developers, to the specified maintenance page.'), array('class' => 'help')));
-									
+			
+			// Append new preference group			
 			$context['wrapper']->appendChild($group);
-						
 		}
 		
 	}
