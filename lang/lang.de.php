@@ -5,17 +5,14 @@
 		'author' => array(
 			'name' => 'Nils Hörrmann',
 			'email' => 'post@nilshoerrmann.de',
-			'website' => 'http://www.nilshoerrmann.de'
+			'website' => 'http://nilshoerrmann.de'
 		),
-		'release-date' => '2009-12-29'
+		'release-date' => '2010-01-19'
 	);
 	
-	
-	/*
-	 * EXTENSION: Maintenance Mode
-	 * Localisation strings
+	/**
+	 * Maintenance Mode
 	 */
-
 	$dictionary = array(
 	
 		'Maintenance Mode' => 
@@ -24,8 +21,8 @@
 		'Enable maintenance mode' => 
 		'Wartungsmodus aktivieren',
 
-		'Maintenance mode will redirect all visitors, other than developers, to the specified maintenance page.' => 
-		'Der Wartungsmodus leitet alle Besucher, die nicht als Entwickler registriert sind, auf eine festgelegte Wartungsseite um (Seitentyp: <code>maintenance</code>).',
+		'Maintenance mode will redirect all visitors, other than developers, to the specified maintenance page. To specify a maintenance page, give a page a type of <code>maintenance</code>' => 
+		'Der Wartungsmodus leitet alle Besucher, die nicht als Entwickler registriert sind, auf eine festgelegte Wartungsseite um. Sie können diese Seite mittels des Seitentyps <code>maintenance</code> festlegen.',
 
 		'This site is currently in maintenance mode.' =>
 		'Diese Seite ist derzeit im Wartungsmodus.',

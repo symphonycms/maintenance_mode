@@ -24,6 +24,8 @@ Information about [installing and updating extensions](http://symphony-cms.com/l
 
 - Added page type "maintenance" to the suggestion list
 - Fixed error handling
+- Removed empty language files
+- Updated included translations
 
 **Version 1.3**
 

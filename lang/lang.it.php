@@ -10,7 +10,6 @@
 		'release-date' => '2010-02-25',
 	);
 
-
 	/**
 	 * Maintenance Mode
 	 */
@@ -34,7 +33,7 @@
 		'Enable maintenance mode' => 
 		'Abilita la modalit&agrave; manutenzione',
 
-		'Maintenance mode will redirect all visitors, other than developers, to the specified maintenance page.' => 
+		'Maintenance mode will redirect all visitors, other than developers, to the specified maintenance page. To specify a maintenance page, give a page a type of <code>maintenance</code>' => 
 		'La modalit&agrave; manutenzione reindirizzer&agrave; tutti i visitatori alla pagina di manutenzione. Per specificare tale pagina, assicurati che sia di tipo <code>maintenance</code>.'
 
 	);

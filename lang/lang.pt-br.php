@@ -4,39 +4,36 @@
 		'name' => 'Portuguese (Brazil)',
 		'author' => array(
 			'name' => 'Rainer Borene',
-			'email' => 'rainerborene@gmail.com',
-			'website' => false
+			'email' => 'me@rainerborene.com',
+			'website' => 'http://rainerborene.com'
 		),
-		'release-date' => '2009-10-08'
+		'release-date' => '2010-11-18'
 	);
 	
-	
-	/*
-	 * EXTENSION: Maintenance Mode
-	 * Localisation strings
+	/**
+	 * Maintenance Mode
 	 */
-
 	$dictionary = array(
 	
 		'Maintenance Mode' => 
-		false,
+		'Modo de Manutenção',
 
 		'Enable maintenance mode' => 
-		false,
+		'Ativar o modo de manutenção',
 
-		'Maintenance mode will redirect all visitors, other than developers, to the specified maintenance page.' => 
-		false,
-
+		'Maintenance mode will redirect all visitors, other than developers, to the specified maintenance page. To specify a maintenance page, give a page a type of <code>maintenance</code>' => 
+		'O modo de manutenção irá redirecionar todos os visitantes, exceto os desenvolvedores autenticados, para a página de manutenção especificada.',
+     
 		'This site is currently in maintenance mode.' =>
-		false,
+		'Este site está no modo de manutenção.',
 		
 		'Restore?' =>
-		false,
+		'Restaurar?',
 
 		'Website Offline' => 
-		false,
+		'Website Offline',
 
 		'This site is currently in maintenance. Please check back at a later date.' => 
-		false
+		'Este site está em manutenção. Por favor, volte mais tarde.'
 
 	);
