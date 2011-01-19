@@ -5,8 +5,8 @@
 		public function about() {
 			return array(
 				'name' => 'Maintenance Mode',
-				'version' => '1.3',
-				'release-date' => '2011-01-18',
+				'version' => '1.4',
+				'release-date' => '2011-01-19',
 				'author' => array(
 					array(
 						'name' => 'Alistair Kearney',
@@ -21,8 +21,17 @@
 				)				
 			);
 		}
-		
-		public function getSubscribedDelegates() {
+
+		public function install() {
+			Symphony::Configuration()->set('enabled', 'no', 'maintenance_mode');
+			Administration::instance()->saveConfig();
+		}
+
+		public function uninstall() {
+			Symphony::Configuration()->remove('maintenance_mode');
+		}
+
+		public function getSubscribedDelegates(){
 			return array(
 				array(
 					'page' => '/system/preferences/',
@@ -40,16 +49,6 @@
 					'callback' => '__toggleMaintenanceMode'
 				),
 				array(
-					'page' => '/frontend/',
-					'delegate' => 'FrontendPrePageResolve',
-					'callback' => '__checkForMaintenanceMode'
-				),
-				array(
-					'page' => '/frontend/',
-					'delegate' => 'FrontendParamsResolve',
-					'callback' => '__addParam'
-				),						
-				array(
 					'page' => '/backend/',
 					'delegate' => 'AppendPageAlert',
 					'callback' => '__appendAlert'
@@ -58,8 +57,64 @@
 					'page' => '/blueprints/pages/',
 					'delegate' => 'AppendPageContent',
 					'callback' => '__appendType'
+				),
+				array(
+					'page' => '/frontend/',
+					'delegate' => 'FrontendPrePageResolve',
+					'callback' => '__checkForMaintenanceMode'
+				),
+				array(
+					'page' => '/frontend/',
+					'delegate' => 'FrontendParamsResolve',
+					'callback' => '__addParam'
 				)
 			);
+		}
+		
+		/**
+		 * Append maintenance mode preferences
+		 *
+		 * @param array $context
+		 *  delegate context
+		 */
+		public function appendPreferences($context) {
+
+			// Create preference group
+			$group = new XMLElement('fieldset');
+			$group->setAttribute('class', 'settings');
+			$group->appendChild(new XMLElement('legend', __('Maintenance Mode')));			
+			
+			// Append settings
+			$label = Widget::Label();
+			$input = Widget::Input('settings[maintenance_mode][enabled]', 'yes', 'checkbox');
+			if(Symphony::Configuration()->get('enabled', 'maintenance_mode') == 'yes') $input->setAttribute('checked', 'checked');
+			$label->setValue($input->generate() . ' ' . __('Enable maintenance mode'));
+			$group->appendChild($label);
+			
+			// Append help
+			$group->appendChild(new XMLElement('p', __('Maintenance mode will redirect all visitors, other than developers, to the specified maintenance page. To specify a maintenance page, give a page a type of <code>maintenance</code>'), array('class' => 'help')));
+			
+			// Append new preference group			
+			$context['wrapper']->appendChild($group);
+		}	
+		
+		/**
+		 * Save preferences
+		 *
+		 * @param array $context
+		 *  delegate context
+		 */
+		public function __SavePreferences($context) {
+
+			// Disable maintenance mode by default
+			if(!is_array($context['settings'])) {
+				$context['settings'] = array('maintenance_mode' => array('enabled' => 'no'));
+			}
+			
+			// Disable maintenance mode if it has not been set to 'yes'
+			elseif(!isset($context['settings']['maintenance_mode'])) {
+				$context['settings']['maintenance_mode'] = array('enabled' => 'no');
+			}			
 		}
 		
 		/**
@@ -71,10 +126,10 @@
 				// Toogle mode	
 				$value = (Symphony::Configuration()->get('enabled', 'maintenance_mode') == 'no' ? 'yes' : 'no');					
 				Symphony::Configuration()->set('enabled', $value, 'maintenance_mode');
-				Symphony::Engine()->saveConfig();
+				Administration::instance()->saveConfig();
 				
 				// Redirect
-				redirect((isset($_REQUEST['redirect']) ? URL . '/symphony' . $_REQUEST['redirect'] : Symphony::Engine()->getCurrentPageURL() . '/'));
+				redirect((isset($_REQUEST['redirect']) ? URL . '/symphony' . $_REQUEST['redirect'] : Administration::instance()->getCurrentPageURL() . '/'));
 			}
 		}
 		
@@ -92,21 +147,11 @@
 			
 			// Site in maintenance mode
 			if(Symphony::Configuration()->get('enabled', 'maintenance_mode') == 'yes') {
-				Symphony::Engine()->Page->pageAlert(
+				Administration::instance()->Page->pageAlert(
 					__('This site is currently in maintenance mode.') . ' <a href="' . URL . '/symphony/system/preferences/?action=toggle-maintenance-mode&amp;redirect=' . getCurrentPage() . '">' . __('Restore?') . '</a>',
 					Alert::NOTICE
 				);
 			}
-		}
-		
-		/**
-		 * Add site mode to parameter pool
-		 *
-		 * @param array $context
-		 *  delegate context
-		 */
-		public function __addParam($context) {
-			$context['params']['site-mode'] = (Symphony::Configuration()->get('enabled', 'maintenance_mode') == 'yes' ? 'maintenance' : 'live'); 
 		}
 		
 		/**
@@ -167,43 +212,13 @@
 		}
 		
 		/**
-		 * Save preferences
+		 * Add site mode to parameter pool
 		 *
 		 * @param array $context
 		 *  delegate context
 		 */
-		public function __SavePreferences($context) {
-
-			// Disable maintenance mode by default
-			if(!is_array($context['settings'])) {
-				$context['settings'] = array('maintenance_mode' => array('enabled' => 'no'));
-			}
-			
-			// Disable maintenance mode if it has not been set to 'yes'
-			elseif(!isset($context['settings']['maintenance_mode'])) {
-				$context['settings']['maintenance_mode'] = array('enabled' => 'no');
-			}			
+		public function __addParam($context) {
+			$context['params']['site-mode'] = (Symphony::Configuration()->get('enabled', 'maintenance_mode') == 'yes' ? 'maintenance' : 'live'); 
 		}
 
-		public function appendPreferences($context) {
-
-			// Create preference group
-			$group = new XMLElement('fieldset');
-			$group->setAttribute('class', 'settings');
-			$group->appendChild(new XMLElement('legend', __('Maintenance Mode')));			
-			
-			// Append settings
-			$label = Widget::Label();
-			$input = Widget::Input('settings[maintenance_mode][enabled]', 'yes', 'checkbox');
-			if(Symphony::Configuration()->get('enabled', 'maintenance_mode') == 'yes') $input->setAttribute('checked', 'checked');
-			$label->setValue($input->generate() . ' ' . __('Enable maintenance mode'));
-			$group->appendChild($label);
-			
-			// Append help
-			$group->appendChild(new XMLElement('p', __('Maintenance mode will redirect all visitors, other than developers, to the specified maintenance page.'), array('class' => 'help')));
-			
-			// Append new preference group			
-			$context['wrapper']->appendChild($group);
-		}
-		
 	}

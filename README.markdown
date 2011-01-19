@@ -3,9 +3,9 @@
 This extension enables a Maintenance mode for Symphony.  
 It is part of the Symphony core download package.
 
-- Version: 1.3
-- Date: 18th January 2011
-- Requirements: Symphony 2.2
+- Version: 1.4
+- Date: 19th January 2011
+- Requirements: Symphony 2.0.6
 - Author: Alistair Kearney, alistair@symphony-cms.com, and the Symphony Team, team@symphony-cms.com
 - Constributors: [A list of contributors can be found in the commit history](http://github.com/symphonycms/maintenance_mode/commits/master)
 - GitHub Repository: <http://github.com/symphonycms/maintenance_mode>
@@ -20,9 +20,15 @@ Information about [installing and updating extensions](http://symphony-cms.com/l
 
 ## Change Log
 
+**Version 1.4**
+
+- Added page type "maintenance" to the suggestion list
+- Fixed error handling
+
 **Version 1.3**
 
-- Compatibility update for Symphony 2.2
+- Made extension responsible for it's own Configuration settings
+- Updated to use the Symphony constants instead of `$this->_Parent`
 
 **Version 1.2**
 
