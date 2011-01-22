@@ -164,7 +164,7 @@
 		
 			// Find page types
 			$elements = $context['form']->getChildren();
-			$fieldset = $elements[3]->getChildren();
+			$fieldset = $elements[0]->getChildren();
 			$group = $fieldset[2]->getChildren();
 			$div = $group[1]->getChildren();
 			$types = $div[2]->getChildren();
