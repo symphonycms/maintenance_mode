@@ -180,7 +180,7 @@
 			// Append maintenance type
 			if($flag == false) {
 				$mode = new XMLElement('li', 'maintenance');
-				$types[1]->appendChild($mode);
+				$div[2]->appendChild($mode);
 			}
 		}
 		
