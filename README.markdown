@@ -3,9 +3,9 @@
 This extension enables a Maintenance mode for Symphony.  
 It is part of the Symphony core download package.
 
-- Version: 1.4
-- Date: 19th January 2011
-- Requirements: Symphony 2.0.6
+- Version: 1.5
+- Date: 8th August 2011
+- Requirements: Symphony 2.2
 - Author: Alistair Kearney, alistair@symphony-cms.com, and the Symphony Team, team@symphony-cms.com
 - Constributors: [A list of contributors can be found in the commit history](http://github.com/symphonycms/maintenance_mode/commits/master)
 - GitHub Repository: <http://github.com/symphonycms/maintenance_mode>
@@ -19,6 +19,11 @@ Maintenance mode will block all front-end pages from being viewed unless logged 
 Information about [installing and updating extensions](http://symphony-cms.com/learn/tasks/view/install-an-extension/) can be found in the Symphony documentation at <http://symphony-cms.com/learn/>.
 
 ## Change Log
+
+**Version 1.4**
+
+- Update to use `SYMPHONY_URL` constant (breaks compatibility with Symphony versions prior to 2.2)
+- Added Romanian translation
 
 **Version 1.4**
 
