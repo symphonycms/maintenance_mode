@@ -146,7 +146,7 @@
 			if(!is_null($context['alert'])) return;
 
 			// Site in maintenance mode
-			if(Symphony::Configuration()->get('enabled', 'maintenance_mode') == 'yes') {
+			if(Symphony::Configuration()->get('enabled', 'maintenance_mode') == 'yes' && Symphony::Engine()->Author->isDeveloper()) {
 				Administration::instance()->Page->pageAlert(
 					__('This site is currently in maintenance mode.') . ' <a href="' . SYMPHONY_URL . '/system/preferences/?action=toggle-maintenance-mode&amp;redirect=' . getCurrentPage() . '">' . __('Restore?') . '</a>',
 					Alert::NOTICE
@@ -191,7 +191,7 @@
 		 *  delegate context
 		 */
 		public function __checkForMaintenanceMode($context) {
-			if(!Symphony::Engine()->isLoggedIn() && Symphony::Configuration()->get('enabled', 'maintenance_mode') == 'yes'){
+			if(!Symphony::Engine()->isLoggedIn() && Symphony::Configuration()->get('enabled', 'maintenance_mode') == 'yes' || !Symphony::Engine()->Author->isDeveloper()){
 
 				// Find custom maintenance page
 				$context['row'] = Symphony::Database()->fetchRow(0,
