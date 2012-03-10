@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<extension id="maintenance_mode" status="released" xmlns="http://symphony-cms.com/schemas/extension/1.0">
+<extension id="maintenance_mode" status="unreleased" xmlns="http://symphony-cms.com/schemas/extension/1.0">
 	<name>Maintenance Mode</name>
 	<description>Temporarily close your site for maintenance</description>
 	<repo type="github">https://github.com/symphonycms/maintenance_mode</repo>
@@ -15,6 +15,9 @@
 		</author>
 	</authors>
 	<releases>
+		<release version="1.6" date="2012-03-10" min="2.3">
+			- Update to use `PageManager` and for multiple alerts
+		</release>
 		<release version="1.5" date="2011-08-08" min="2.2">
 			- Update to use `SYMPHONY_URL` constant (breaks compatibility with Symphony versions prior to 2.2)
 			- Added Romanian translation

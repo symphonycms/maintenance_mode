@@ -2,9 +2,9 @@
 
 This extension enables a Maintenance mode for Symphony. It is part of the Symphony core download package.
 
-- Version: 1.5
-- Date: 8th August 2011
-- Requirements: Symphony 2.2
+- Version: 1.6
+- Date: unreleased
+- Requirements: Symphony 2.3
 - Author: Alistair Kearney, alistair@symphony-cms.com, and the Symphony Team, team@symphony-cms.com
 - Constributors: [A list of contributors can be found in the commit history](http://github.com/symphonycms/maintenance_mode/commits/master)
 
