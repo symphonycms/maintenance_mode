@@ -142,9 +142,6 @@
 		 */
 		public function __appendAlert($context) {
 
-			// Check for other alerts
-			if(!is_null($context['alert'])) return;
-
 			// Site in maintenance mode
 			if(Symphony::Configuration()->get('enabled', 'maintenance_mode') == 'yes') {
 				Administration::instance()->Page->pageAlert(
