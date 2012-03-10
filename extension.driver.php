@@ -2,26 +2,6 @@
 
 	Class extension_maintenance_mode extends Extension {
 
-		public function about() {
-			return array(
-				'name' => 'Maintenance Mode',
-				'version' => '1.5',
-				'release-date' => '2011-08-08',
-				'author' => array(
-					array(
-						'name' => 'Alistair Kearney',
-						'website' => 'http://pointybeard.com',
-						'email' => 'alistair@pointybeard.com'
-					),
-					array(
-						'name' => 'Symphony Team',
-						'website' => 'http://symphony-cms.com',
-						'email' => 'team@symphony-cms.com'
-					)
-				)
-			);
-		}
-
 		public function install() {
 			Symphony::Configuration()->set('enabled', 'no', 'maintenance_mode');
 			Administration::instance()->saveConfig();
