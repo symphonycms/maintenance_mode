@@ -194,12 +194,14 @@
 			if(!Symphony::Engine()->isLoggedIn() && Symphony::Configuration()->get('enabled', 'maintenance_mode') == 'yes'){
 
 				// Find custom maintenance page
-				$context['row'] = Symphony::Database()->fetchRow(0,
-					"SELECT `tbl_pages`.* FROM `tbl_pages`, `tbl_pages_types`
-					 WHERE `tbl_pages_types`.page_id = `tbl_pages`.id
-					 AND tbl_pages_types.`type` = 'maintenance'
-					 LIMIT 1"
-				);
+				$row = PageManager::fetchPageByType('maintenance');
+
+				if (is_array($row) && isset($row[0])) {
+					// There's more than a `maintenance` page
+					$row = $row[0];
+				}
+
+				$context['row'] = $row;
 
 				// Default maintenance message
 				if(empty($context['row'])) {
