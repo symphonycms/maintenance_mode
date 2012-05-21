@@ -4,7 +4,7 @@
 
 		public function install() {
 			Symphony::Configuration()->set('enabled', 'no', 'maintenance_mode');
-			Administration::instance()->saveConfig();
+			return Symphony::Configuration()->write();
 		}
 
 		public function uninstall() {
@@ -103,10 +103,10 @@
 		public function __toggleMaintenanceMode() {
 			if($_REQUEST['action'] == 'toggle-maintenance-mode') {
 
-				// Toogle mode
+				// Toggle mode
 				$value = (Symphony::Configuration()->get('enabled', 'maintenance_mode') == 'no' ? 'yes' : 'no');
 				Symphony::Configuration()->set('enabled', $value, 'maintenance_mode');
-				Administration::instance()->saveConfig();
+				Symphony::Configuration()->write();
 
 				// Redirect
 				redirect((isset($_REQUEST['redirect']) ? SYMPHONY_URL . $_REQUEST['redirect'] : Administration::instance()->getCurrentPageURL() . '/'));

@@ -15,10 +15,11 @@
 		</author>
 	</authors>
 	<releases>
-		<release version="1.6" date="2012-03-10" min="2.3">
-			- Update to use `PageManager` and for multiple alerts
+		<release version="1.6" date="2012-05-21" min="2.3">
+			- Add support for Symphony 2.3
+			- Update to use `PageManager`, new `Configuration` methods
 		</release>
-		<release version="1.5" date="2011-08-08" min="2.2">
+		<release version="1.5" date="2011-08-08" min="2.2" max="2.2.x">
 			- Update to use `SYMPHONY_URL` constant (breaks compatibility with Symphony versions prior to 2.2)
 			- Added Romanian translation
 		</release>
