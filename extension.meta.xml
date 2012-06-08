@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<extension id="maintenance_mode" status="unreleased" xmlns="http://symphony-cms.com/schemas/extension/1.0">
+<extension id="maintenance_mode" status="released" xmlns="http://symphony-cms.com/schemas/extension/1.0">
 	<name>Maintenance Mode</name>
 	<description>Temporarily close your site for maintenance</description>
 	<repo type="github">https://github.com/symphonycms/maintenance_mode</repo>
