@@ -79,7 +79,7 @@
 			$label->appendChild(Widget::Input('settings[maintenance_mode][ip_whitelist]', Symphony::Configuration()->get('ip_whitelist', 'maintenance_mode')));
 			$group->appendChild($label);
 
-        	// Append help
+			// Append help
 			$group->appendChild(new XMLElement('p', __('Any user that has an IP listed above will be granted access. This eliminates the need to allow a user backend access. Separate each with a space.'), array('class' => 'help')));
 
 			// Append new preference group
