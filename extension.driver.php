@@ -75,9 +75,9 @@
 			$group->appendChild(new XMLElement('p', __('Maintenance mode will redirect all visitors, other than developers, to the specified maintenance page. To specify a maintenance page, give a page a type of <code>maintenance</code>'), array('class' => 'help')));
 
 			// IP White list
-        	$label = Widget::Label(__('IP Whitelist'));
-        	$label->appendChild(Widget::Input('settings[maintenance_mode][ip_whitelist]', Symphony::Configuration()->get('ip_whitelist', 'maintenance_mode')));
-        	$group->appendChild($label);
+			$label = Widget::Label(__('IP Whitelist'));
+			$label->appendChild(Widget::Input('settings[maintenance_mode][ip_whitelist]', Symphony::Configuration()->get('ip_whitelist', 'maintenance_mode')));
+			$group->appendChild($label);
 
         	// Append help
 			$group->appendChild(new XMLElement('p', __('Any user that has an IP listed above will be granted access. This eliminates the need to allow a user backend access. Separate each with a space.'), array('class' => 'help')));
