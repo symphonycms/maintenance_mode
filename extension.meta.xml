@@ -15,7 +15,11 @@
 		</author>
 	</authors>
 	<releases>
-		<release version="1.7" data="2013-07-01" min="2.3">
+		<release version="1.8" date="2014-08-17" min="2.4" max="2.5">
+			- Add IP Whitelist feature (thanks @pointybeard)
+			- Mark compatibility with Symphony 2.4+
+		</release>
+		<release version="1.7" date="2013-07-01" min="2.3">
 			- Update links to **getsymphony.com**
 		</release>
 		<release version="1.6" date="2012-05-21" min="2.3">
