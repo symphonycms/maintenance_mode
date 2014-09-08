@@ -132,10 +132,17 @@
 
 			// Site in maintenance mode
 			if(Symphony::Configuration()->get('enabled', 'maintenance_mode') == 'yes') {
-				Administration::instance()->Page->pageAlert(
-					__('This site is currently in maintenance mode.') . ' <a href="' . SYMPHONY_URL . '/system/preferences/?action=toggle-maintenance-mode&amp;redirect=' . getCurrentPage() . '">' . __('Restore?') . '</a>',
-					Alert::NOTICE
-				);
+				if (Symphony::Engine()->Author->isDeveloper()) {
+					Administration::instance()->Page->pageAlert(
+						__('This site is currently in maintenance mode.') . ' <a href="' . SYMPHONY_URL . '/system/preferences/?action=toggle-maintenance-mode&amp;redirect=' . getCurrentPage() . '">' . __('Restore?') . '</a>',
+						Alert::NOTICE
+					);
+				} else {
+Administration::instance()->Page->pageAlert(
+						__('This site is currently in maintenance mode.'),
+						Alert::NOTICE
+					);
+				}
 			}
 		}
 
@@ -175,8 +182,8 @@
 		 * @param array $context
 		 *  delegate context
 		 */
-		public function __checkForMaintenanceMode($context) {
-			if(!Symphony::Engine()->isLoggedIn() && Symphony::Configuration()->get('enabled', 'maintenance_mode') == 'yes'){
+		public function __checkForMaintenanceMode($context) {	
+			if(!Symphony::Engine()->isLoggedIn() && Symphony::Configuration()->get('enabled', 'maintenance_mode') == 'yes' || !Symphony::Engine()->Author->isDeveloper()){
 
 				// Check the IP white list
 				$whitelist = Symphony::Configuration()->get('ip_whitelist', 'maintenance_mode');
