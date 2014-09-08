@@ -102,11 +102,11 @@ Class extension_maintenance_mode extends Extension
 
             $context['settings'] = array('maintenance_mode' => array('enabled' => 'no'));
 
-        } elseif (!isset($context['settings']['maintenance_mode'])) {
+        } elseif (!isset($context['settings']['maintenance_mode']['enabled'])) {
 
             // Disable maintenance mode if it has not been set to 'yes'
 
-            $context['settings']['maintenance_mode'] = array('enabled' => 'no');
+            $context['settings']['maintenance_mode']['enabled'] = 'no';
         }
     }
 
