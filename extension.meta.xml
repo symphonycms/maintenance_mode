@@ -15,7 +15,10 @@
 		</author>
 	</authors>
 	<releases>
-		<release version="1.8.1" date="2014-08-27" min="2.4" max="2.5">
+		<release version="1.8.2" date="2014-10-20" min="2.4" max="2.5.x">
+			- Fix error when unchecking the maintenance mode from the Preferences area
+		</release>
+		<release version="1.8.1" date="2014-08-27" min="2.4" max="2.5.x">
 			- Fix error when default maintenance page is shown on Symphony 2.5
 		</release>
 		<release version="1.8" date="2014-08-17" min="2.4" max="2.5">
