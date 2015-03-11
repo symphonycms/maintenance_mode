@@ -15,6 +15,9 @@
 		</author>
 	</authors>
 	<releases>
+		<release version="1.8.3" date="2015-03-11" min="2.4" max="2.6.x">
+			- Mark compatibility with Symphony 2.6+
+		</release>
 		<release version="1.8.2" date="2014-10-20" min="2.4" max="2.5.x">
 			- Fix error when unchecking the maintenance mode from the Preferences area
 		</release>
