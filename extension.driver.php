@@ -84,6 +84,17 @@ Class extension_maintenance_mode extends Extension
         // Append help
         $group->appendChild(new XMLElement('p', __('Any user that has an IP listed above will be granted access. This eliminates the need to allow a user backend access. Separate each with a space.'), array('class' => 'help')));
 
+
+        // Useragent White list
+        $label = Widget::Label(__('Useragent Whitelist'));
+        $useragent = implode("\r\n",json_decode(Symphony::Configuration()->get('useragent_whitelist', 'maintenance_mode')));
+        $label->appendChild(Widget::Textarea('settings[maintenance_mode][useragent_whitelist]', 5, 50, $useragent));
+        $group->appendChild($label);
+
+        // Append help
+        $group->appendChild(new XMLElement('p', __('Any useragent that listed above will be granted access. This eliminates the need to allow a user backend access, useful when third party services need to access your site prior to launch. Insert in json array format eg ["useragent1","useragent2"].'), array('class' => 'help')));
+
+
         // Append new preference group
         $context['wrapper']->appendChild($group);
     }
@@ -96,6 +107,11 @@ Class extension_maintenance_mode extends Extension
      */
     public function __SavePreferences($context)
     {
+        if ($context['settings']['maintenance_mode']['useragent_whitelist']){
+            // Convert to a json encoded array
+            $context['settings']['maintenance_mode']['useragent_whitelist'] = json_encode(explode("\r\n",$context['settings']['maintenance_mode']['useragent_whitelist']));
+        }
+
         if (!is_array($context['settings'])) {
 
             // Disable maintenance mode by default
@@ -197,6 +213,18 @@ Class extension_maintenance_mode extends Extension
                 $whitelist = explode(' ', $whitelist);
 
                 if (in_array($_SERVER['REMOTE_ADDR'], $whitelist)) {
+
+                    return;
+                }
+            }
+
+            // Check if useragent is allowed
+            $useragent = Symphony::Configuration()->get('useragent_whitelist', 'maintenance_mode');
+            if (strlen(trim($useragent)) > 0) {
+
+                $useragent = json_decode($useragent);
+
+                if (in_array($_SERVER['HTTP_USER_AGENT'], $useragent)) {
 
                     return;
                 }
