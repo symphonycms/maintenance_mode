@@ -136,13 +136,25 @@ Class extension_maintenance_mode extends Extension
      */
     public function __appendAlert($context)
     {
+        $author = null;
+        if (is_callable(array('Symphony', 'Author'))) {
+            $author = Symphony::Author();
+        } else {
+            $author = Administration::instance()->Author;
+        }
         // Site in maintenance mode
-        if (Symphony::Configuration()->get('enabled', 'maintenance_mode') === 'yes') {
-
-            Administration::instance()->Page->pageAlert(
-                __('This site is currently in maintenance mode.') . ' <a href="' . SYMPHONY_URL . '/system/preferences/?action=toggle-maintenance-mode&amp;redirect=' . getCurrentPage() . '">' . __('Restore?') . '</a>',
-                Alert::NOTICE
-            );
+        if(Symphony::Configuration()->get('enabled', 'maintenance_mode') == 'yes') {
+            if ($author != null && $author->isDeveloper()) {
+                Administration::instance()->Page->pageAlert(
+                    __('This site is currently in maintenance mode.') . ' <a href="' . SYMPHONY_URL . '/system/preferences/?action=toggle-maintenance-mode&amp;redirect=' . getCurrentPage() . '">' . __('Restore?') . '</a>',
+                    Alert::NOTICE
+                );
+            } else {
+                Administration::instance()->Page->pageAlert(
+                    __('This site is currently in maintenance mode.'),
+                    Alert::NOTICE
+                );
+            }
         }
     }
 
