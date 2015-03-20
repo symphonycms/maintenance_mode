@@ -87,7 +87,10 @@ Class extension_maintenance_mode extends Extension
 
         // Useragent White list
         $label = Widget::Label(__('Useragent Whitelist'));
-        $useragent = implode("\r\n",json_decode(Symphony::Configuration()->get('useragent_whitelist', 'maintenance_mode')));
+        $whitelist = json_decode(Symphony::Configuration()->get('useragent_whitelist', 'maintenance_mode'));
+        if (is_array($whitelist) && !empty($whitelist)) {
+            $useragent = implode("\r\n",$whitelist);
+        }
         $label->appendChild(Widget::Textarea('settings[maintenance_mode][useragent_whitelist]', 5, 50, $useragent));
         $group->appendChild($label);
 
