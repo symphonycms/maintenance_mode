@@ -15,6 +15,9 @@
 		</author>
 	</authors>
 	<releases>
+		<release version="1.9.2" date="2016-10-06" min="2.4" max="2.6.x">
+			- Updated Russian language
+		</release>
 		<release version="1.9.1" date="2015-03-20" min="2.4" max="2.6.x">
 			- Fix Useragent bug
 		</release>
