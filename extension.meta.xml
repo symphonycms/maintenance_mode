@@ -15,6 +15,9 @@
 		</author>
 	</authors>
 	<releases>
+		<release version="1.9.3" date="2017-08-10" min="2.4" max="2.x.x">
+			- Symphony 2.7 compatibility
+		</release>
 		<release version="1.9.2" date="2016-10-06" min="2.4" max="2.6.x">
 			- Updated Russian language
 		</release>
