@@ -15,6 +15,9 @@
 		</author>
 	</authors>
 	<releases>
+		<release version="2.0.0" date="TBA" min="4.0.0" max="4.x.x" php-min="5.6.x" php-max="7.x.x">
+			- PHP7 Compatibility
+		</release>
 		<release version="1.9.3" date="2017-08-10" min="2.4" max="2.x.x">
 			- Symphony 2.7 compatibility
 		</release>
