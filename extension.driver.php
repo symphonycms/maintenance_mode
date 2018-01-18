@@ -66,7 +66,6 @@ Class extension_maintenance_mode extends Extension
         $input = Widget::Input('settings[maintenance_mode][enabled]', 'yes', 'checkbox');
 
         if (Symphony::Configuration()->get('enabled', 'maintenance_mode') === 'yes') {
-
             $input->setAttribute('checked', 'checked');
         }
 
@@ -78,7 +77,7 @@ Class extension_maintenance_mode extends Extension
 
         // IP White list
         $label = Widget::Label(__('IP Whitelist'));
-        $label->appendChild(Widget::Input('settings[maintenance_mode][ip_whitelist]', Symphony::Configuration()->get('ip_whitelist', 'maintenance_mode')));
+        $label->appendChild(Widget::Input('settings[maintenance_mode][ip_whitelist]', General::sanitize(Symphony::Configuration()->get('ip_whitelist', 'maintenance_mode'))));
         $group->appendChild($label);
 
         // Append help
@@ -91,7 +90,7 @@ Class extension_maintenance_mode extends Extension
         if (is_array($whitelist) && !empty($whitelist)) {
             $useragent = implode("\r\n",$whitelist);
         }
-        $label->appendChild(Widget::Textarea('settings[maintenance_mode][useragent_whitelist]', 5, 50, $useragent));
+        $label->appendChild(Widget::Textarea('settings[maintenance_mode][useragent_whitelist]', 5, 50, General::sanitize($useragent)));
         $group->appendChild($label);
 
         // Append help
