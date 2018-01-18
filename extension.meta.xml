@@ -3,7 +3,7 @@
 	<name>Maintenance Mode</name>
 	<description>Temporarily close your site for maintenance</description>
 	<repo type="github">https://github.com/symphonycms/maintenance_mode</repo>
-	<url type="discuss">http://getsymphony.com/discuss/thread/32797/</url>
+	<url type="discuss">https://getsymphony.com/discuss/thread/32797/</url>
 	<types>
 		<type>Workflow</type>
 		<type>Security</type>
@@ -11,10 +11,13 @@
 	<authors>
 		<author>
 			<name github="symphonycms" symphony="team">Symphony Team</name>
-			<website>http://getsymphony.com</website>
+			<website>https://www.getsymphony.com</website>
 		</author>
 	</authors>
 	<releases>
+		<release version="1.9.4" date="2018-01-18" min="2.4" max="2.x.x">
+			- Sanitize the widget's content
+		</release>
 		<release version="1.9.3" date="2017-08-10" min="2.4" max="2.x.x">
 			- Symphony 2.7 compatibility
 		</release>
